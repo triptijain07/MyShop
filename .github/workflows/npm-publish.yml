@@ -1,0 +1,70 @@
+name: Deploy MyShop Application
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    name: Build, Push, and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      # Step 3: Install and build Next.js app
+      - name: Install Dependencies
+        run: npm install --frozen-lockfile
+
+      - name: Build Project
+        run: npm run build
+
+      # Step 4: Log in to Docker Hub
+      - name: Docker Hub Login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Step 5: Build and push Docker image
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/myshop:latest
+
+      # Step 6: Deploy to EC2
+      - name: Deploy to EC2 Instance
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: 13.48.147.89
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            echo "Pulling latest Docker image..."
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myshop:latest
+
+            echo "Stopping existing container (if running)..."
+            docker stop myshop || true
+            docker rm myshop || true
+
+            echo "Starting new container..."
+            docker run -d -p 3000:3000 --name myshop \
+              -e MONGODB_URL="mongodb+srv://myshopuser:myshop123@cluster0.tn3hwnw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0" \
+              -e NEXTAUTH_URL="http://13.48.147.89:3000" \
+              -e NEXTAUTH_SECRET="secretId" \
+              -e NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="Root" \
+              -e NEXT_PUBLIC_CLOUDINARY_API_KEY="742991514563978" \
+              -e CLOUDINARY_SECRET="6r7rxhyyWphbmoZLn8HRKLYH8R4" \
+              ${{ secrets.DOCKERHUB_USERNAME }}/myshop:latest

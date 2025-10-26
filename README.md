@@ -70,13 +70,6 @@ DOCKERHUB_USERNAME	Docker Hub username
 DOCKERHUB_TOKEN	Docker Hub access token
 EC2_HOST	EC2 public IP
 EC2_SSH_KEY	EC2 private key (.pem)
-MONGODB_URL	MongoDB Atlas connection string
-NEXTAUTH_URL	App URL
-NEXTAUTH_SECRET	NextAuth secret
-CLOUD_NAME	Cloudinary cloud name
-CLOUD_API_KEY	Cloudinary API key
-CLOUD_SECRET	Cloudinary secret key
-Deployment Steps
 
 Push changes to main branch:
 
@@ -104,11 +97,6 @@ Troubleshooting
 500 Internal Server Error: Check container logs for missing environment variables:
 
 docker logs myshop
-
-
-MongoDB connection error: Ensure EC2 IP is whitelisted in MongoDB Atlas
-
-Docker permission error: Make sure user running SSH has Docker access
 
 Notes
 

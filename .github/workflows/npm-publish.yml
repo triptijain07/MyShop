@@ -61,7 +61,7 @@ jobs:
 
             echo "Starting new container..."
             docker run -d -p 3000:3000 --name myshop \
-             -e MONGODB_URL="mongodb+srv://triptijain_db:2IFP0VwNPkm72iub@cluster0.aksjdfas.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0" \
+             -e MONGODB_URL="mongodb+srv:// jaintripti31573157_db_user:20ruY449a5xf1gaY@cluster0.aksjdfas.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0" \
              -e NEXTAUTH_URL="https://16.171.30.211:3000" \
              -e NEXTAUTH_SECRET="secretId" \
              -e NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="Root" \

@@ -1,0 +1,11 @@
+MONGODB_URL=mongodb+srv://jaintripti31573157_db_user:20ruY449a5xf1gaY@cluster0.yszf4km.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+NEXTAUTH_URL=https://51.20.215.208:3000
+
+NEXTAUTH_SECRET=secretId
+
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=Root
+
+NEXT_PUBLIC_CLOUDINARY_API_KEY=758434969166769
+
+CLOUDINARY_SECRET=8HQ7NkgQzkFqDqZUb0KKgiNNNq0
